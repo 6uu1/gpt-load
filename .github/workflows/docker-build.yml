@@ -4,6 +4,13 @@ on:
   push:
     tags:
       - "*"
+
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Version tag (e.g., latest, v1.0.0, test)"
+        required: true
+        default: "latest"
 jobs:
   build_docker_image:
     name: Build Docker Image
@@ -41,8 +48,9 @@ jobs:
             latest=false
           tags: |
             type=ref,event=tag
-            type=raw,value=beta,enable=${{ contains(github.ref, '-beta') }}
-            type=raw,value=latest,enable=${{ !contains(github.ref, '-') }}
+            type=raw,value=beta,enable=${{ github.event_name == 'push' && contains(github.ref, '-beta') }}
+            type=raw,value=latest,enable=${{ github.event_name == 'push' && !contains(github.ref, '-') }}
+            type=raw,value=${{ inputs.version }},enable=${{ github.event_name == 'workflow_dispatch' }}
 
       - name: Build and push Docker image
         id: build
@@ -54,4 +62,4 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           build-args: |
-            VERSION=${{ github.ref_name }}
+            VERSION=${{ github.event_name == 'workflow_dispatch' && inputs.version || github.ref_name }}
