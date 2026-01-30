@@ -241,19 +241,19 @@ onMounted(() => {
 }
 
 .key-icon {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #007AFF 0%, #5AC8FA 100%);
 }
 
 .rpm-icon {
-  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  background: linear-gradient(135deg, #FF9500 0%, #FFCC00 100%);
 }
 
 .request-icon {
-  background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+  background: linear-gradient(135deg, #34C759 0%, #30D158 100%);
 }
 
 .error-icon {
-  background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+  background: linear-gradient(135deg, #FF3B30 0%, #FF453A 100%);
 }
 
 .stat-trend {
@@ -304,19 +304,19 @@ onMounted(() => {
 }
 
 .key-bar {
-  background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(90deg, #007AFF 0%, #5AC8FA 100%);
 }
 
 .rpm-bar {
-  background: linear-gradient(90deg, #f093fb 0%, #f5576c 100%);
+  background: linear-gradient(90deg, #FF9500 0%, #FFCC00 100%);
 }
 
 .request-bar {
-  background: linear-gradient(90deg, #4facfe 0%, #00f2fe 100%);
+  background: linear-gradient(90deg, #34C759 0%, #30D158 100%);
 }
 
 .error-bar {
-  background: linear-gradient(90deg, #43e97b 0%, #38f9d7 100%);
+  background: linear-gradient(90deg, #FF3B30 0%, #FF453A 100%);
 }
 
 @keyframes slideInUp {
