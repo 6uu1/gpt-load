@@ -139,27 +139,27 @@ body {
 }
 
 :root:not(.dark) ::-webkit-scrollbar-thumb {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  border-radius: 1px;
+  background: linear-gradient(135deg, #007AFF 0%, #5AC8FA 100%);
+  border-radius: 3px;
 }
 
 :root:not(.dark) ::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%);
+  background: linear-gradient(135deg, #0056CC 0%, #4AA8E0 100%);
 }
 
 /* 深色模式滚动条 */
 :root.dark ::-webkit-scrollbar-track {
   background: rgba(0, 0, 0);
-  border-radius: 1px;
+  border-radius: 3px;
 }
 
 :root.dark ::-webkit-scrollbar-thumb {
-  background: linear-gradient(135deg, #7c8aac 0%, #646e8a 100%);
-  border-radius: 1px;
+  background: linear-gradient(135deg, #0A84FF 0%, #64D2FF 100%);
+  border-radius: 3px;
 }
 
 :root.dark ::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(135deg, #8b9df5 0%, #a97dd4 100%);
+  background: linear-gradient(135deg, #007AFF 0%, #5AC8FA 100%);
 }
 
 /* 通用卡片样式和悬停效果 */
@@ -198,17 +198,17 @@ body {
 }
 
 .modern-input:focus {
-  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+  box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.15);
 }
 
 /* 选择文本样式 - 浅色模式 */
 :root:not(.dark) ::selection {
-  background: rgba(102, 126, 234, 0.2);
+  background: rgba(0, 122, 255, 0.2);
   color: #1e293b;
 }
 
 :root:not(.dark) ::-moz-selection {
-  background: rgba(102, 126, 234, 0.2);
+  background: rgba(0, 122, 255, 0.2);
   color: #1e293b;
 }
 
@@ -229,7 +229,7 @@ body {
 }
 
 *:focus-visible {
-  outline: 2px solid rgba(102, 126, 234, 0.5);
+  outline: 2px solid rgba(0, 122, 255, 0.5);
   outline-offset: 2px;
 }
 

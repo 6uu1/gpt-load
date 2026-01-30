@@ -1,23 +1,23 @@
 <script setup lang="ts">
+import { getLocale } from "@/locales";
 import { appState } from "@/utils/app-state";
 import { actualTheme } from "@/utils/theme";
-import { getLocale } from "@/locales";
 import {
   darkTheme,
+  dateEnUS,
+  dateJaJP,
+  dateZhCN,
+  enUS,
+  jaJP,
   NConfigProvider,
   NDialogProvider,
   NLoadingBarProvider,
   NMessageProvider,
   useLoadingBar,
   useMessage,
+  zhCN,
   type GlobalTheme,
   type GlobalThemeOverrides,
-  zhCN,
-  enUS,
-  jaJP,
-  dateZhCN,
-  dateEnUS,
-  dateJaJP,
 } from "naive-ui";
 import { computed, defineComponent, watch } from "vue";
 
@@ -25,12 +25,12 @@ import { computed, defineComponent, watch } from "vue";
 const themeOverrides = computed<GlobalThemeOverrides>(() => {
   const baseOverrides: GlobalThemeOverrides = {
     common: {
-      primaryColor: "#667eea",
-      primaryColorHover: "#5a6fd8",
-      primaryColorPressed: "#4c63d2",
-      primaryColorSuppl: "#8b9df5",
-      borderRadius: "12px",
-      borderRadiusSmall: "8px",
+      primaryColor: "#007AFF",
+      primaryColorHover: "#0056CC",
+      primaryColorPressed: "#004499",
+      primaryColorSuppl: "#5AC8FA",
+      borderRadius: "14px",
+      borderRadiusSmall: "10px",
       fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
     },
     Card: {
@@ -49,8 +49,8 @@ const themeOverrides = computed<GlobalThemeOverrides>(() => {
       itemHeight: "42px",
     },
     LoadingBar: {
-      colorLoading: "#667eea",
-      colorError: "#ff4757",
+      colorLoading: "#007AFF",
+      colorError: "#FF3B30",
       height: "3px",
     },
   };
@@ -87,8 +87,8 @@ const themeOverrides = computed<GlobalThemeOverrides>(() => {
         color: "#1a1d23", // 输入框背景
         textColor: "#e8e8e8",
         colorFocus: "#1a1d23",
-        borderHover: "rgba(102, 126, 234, 0.5)",
-        borderFocus: "rgba(102, 126, 234, 0.8)",
+        borderHover: "rgba(0, 122, 255, 0.5)",
+        borderFocus: "rgba(0, 122, 255, 0.8)",
         placeholderColor: "#666666",
       },
       Select: {

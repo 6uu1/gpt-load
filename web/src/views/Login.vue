@@ -3,10 +3,10 @@ import AppFooter from "@/components/AppFooter.vue";
 import LanguageSelector from "@/components/LanguageSelector.vue";
 import { useAuthService } from "@/services/auth";
 import { LockClosedSharp } from "@vicons/ionicons5";
-import { NButton, NCard, NInput, NSpace, NIcon, useMessage } from "naive-ui";
+import { NButton, NCard, NIcon, NInput, NSpace, useMessage } from "naive-ui";
 import { ref } from "vue";
-import { useRouter } from "vue-router";
 import { useI18n } from "vue-i18n";
+import { useRouter } from "vue-router";
 
 const authKey = ref("");
 const loading = ref(false);
@@ -213,9 +213,9 @@ const handleLogin = async () => {
 }
 
 .login-btn:hover {
-  background: linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%);
+  background: linear-gradient(135deg, #0056CC 0%, #4AA8E0 100%);
   transform: translateY(-1px);
-  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+  box-shadow: 0 8px 25px rgba(0, 122, 255, 0.3);
 }
 
 :deep(.n-input) {

@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { type MenuOption } from "naive-ui";
 import { computed, h, watch } from "vue";
-import { RouterLink, useRoute } from "vue-router";
 import { useI18n } from "vue-i18n";
+import { RouterLink, useRoute } from "vue-router";
 
 const { t } = useI18n();
 
@@ -90,7 +90,7 @@ function renderMenuItem(key: string, label: string, icon: string): MenuOption {
 }
 
 :deep(.n-menu-item:hover) {
-  background: rgba(102, 126, 234, 0.1);
+  background: rgba(0, 122, 255, 0.1);
   transform: translateY(-1px);
   border-radius: var(--border-radius-md);
 }
@@ -104,7 +104,7 @@ function renderMenuItem(key: string, label: string, icon: string): MenuOption {
 }
 
 :deep(.n-menu-item--selected:hover) {
-  background: linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%);
+  background: linear-gradient(135deg, #0056CC 0%, #4AA8E0 100%);
   transform: translateY(-1px);
 }
 </style>
