@@ -8,7 +8,7 @@ import type {
   ParentAggregateGroup,
   TaskInfo,
 } from "@/types/models";
-import http from "@/utils/http";
+import http, { uploadHttp } from "@/utils/http";
 
 export const keysApi = {
   // 获取所有分组
@@ -104,7 +104,10 @@ export const keysApi = {
   // 异步批量添加密钥
   async addKeysAsync(group_id: number, keys_text?: string, file?: File): Promise<TaskInfo> {
     let requestData: FormData | { group_id: number; keys_text: string };
-    const config: { hideMessage: boolean; headers?: { "Content-Type": string } } = {
+    const config: {
+      hideMessage: boolean;
+      headers?: { "Content-Type": string };
+    } = {
       hideMessage: true,
     };
 
@@ -115,6 +118,8 @@ export const keysApi = {
       formData.append("file", file);
       requestData = formData;
       config.headers = { "Content-Type": "multipart/form-data" };
+      const res = await uploadHttp.post("/keys/add-async", requestData, config);
+      return res.data;
     } else {
       // Text input mode
       requestData = { group_id, keys_text: keys_text || "" };
