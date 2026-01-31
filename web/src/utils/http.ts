@@ -5,7 +5,7 @@ import { appState } from "./app-state";
 
 // 定义不需要显示 loading 的 API 地址列表
 const noLoadingUrls = ["/tasks/status"];
-
+const UPLOAD_TIMEOUT_MS = 10 * 60 * 1000; // 10 minutes
 declare module "axios" {
   interface AxiosRequestConfig {
     hideMessage?: boolean;
@@ -78,7 +78,7 @@ const createHttpClient = (overrides?: AxiosRequestConfig): AxiosInstance => {
 
 const http = createHttpClient();
 const uploadHttp = createHttpClient({
-  timeout: 10 * 60 * 1000,
+  timeout: UPLOAD_TIMEOUT_MS,
 });
 
 export { uploadHttp };
