@@ -1,8 +1,15 @@
 <script setup lang="ts">
+import {
+  IconBrain,
+  IconGem,
+  IconLink,
+  IconRobot,
+  IconTool,
+} from "@/components/icons";
 import type { Group } from "@/types/models";
 import { getGroupDisplayName } from "@/utils/display";
-import { Add, LinkOutline, Search } from "@vicons/ionicons5";
-import { NButton, NCard, NEmpty, NInput, NSpin, NTag } from "naive-ui";
+import { Add, Search } from "@vicons/ionicons5";
+import { NButton, NCard, NEmpty, NIcon, NInput, NSpin, NTag } from "naive-ui";
 import { computed, ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
 import AggregateGroupModal from "./AggregateGroupModal.vue";
@@ -146,11 +153,27 @@ function handleGroupCreated(group: Group) {
               "
             >
               <div class="group-icon">
-                <span v-if="group.group_type === 'aggregate'">🔗</span>
-                <span v-else-if="group.channel_type === 'openai'">🤖</span>
-                <span v-else-if="group.channel_type === 'gemini'">💎</span>
-                <span v-else-if="group.channel_type === 'anthropic'">🧠</span>
-                <span v-else>🔧</span>
+                <n-icon
+                  v-if="group.group_type === 'aggregate'"
+                  :component="IconLink"
+                  :size="16"
+                />
+                <n-icon
+                  v-else-if="group.channel_type === 'openai'"
+                  :component="IconRobot"
+                  :size="16"
+                />
+                <n-icon
+                  v-else-if="group.channel_type === 'gemini'"
+                  :component="IconGem"
+                  :size="16"
+                />
+                <n-icon
+                  v-else-if="group.channel_type === 'anthropic'"
+                  :component="IconBrain"
+                  :size="16"
+                />
+                <n-icon v-else :component="IconTool" :size="16" />
               </div>
               <div class="group-content">
                 <div class="group-name">{{ getGroupDisplayName(group) }}</div>
@@ -181,7 +204,7 @@ function handleGroupCreated(group: Group) {
         </n-button>
         <n-button type="info" size="small" block @click="openCreateAggregateGroupModal">
           <template #icon>
-            <n-icon :component="LinkOutline" />
+            <n-icon :component="IconLink" />
           </template>
           {{ t("keys.createAggregateGroup") }}
         </n-button>
@@ -309,7 +332,6 @@ function handleGroupCreated(group: Group) {
 }
 
 .group-icon {
-  font-size: 16px;
   width: 28px;
   height: 28px;
   display: flex;

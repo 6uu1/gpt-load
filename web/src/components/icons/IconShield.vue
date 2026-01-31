@@ -1,0 +1,34 @@
+<script setup lang="ts">
+// Shield/Security icon - Shield style
+// Replaces emoji: 🛡️
+defineProps<{
+  size?: number | string;
+  color?: string;
+}>();
+</script>
+
+<template>
+  <svg
+    :width="size || 20"
+    :height="size || 20"
+    viewBox="0 0 24 24"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path
+      d="M12 22C12 22 20 18 20 12V5L12 2L4 5V12C4 18 12 22 12 22Z"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      fill="none"
+    />
+    <path
+      d="M9 12L11 14L15 10"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    />
+  </svg>
+</template>
