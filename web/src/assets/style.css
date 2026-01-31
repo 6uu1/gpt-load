@@ -27,12 +27,20 @@
   box-sizing: border-box;
 }
 
+/* Lucide icons: 更圆润、更一致 */
+.lucide {
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
 html {
-  background: var(--header-bg);
+  background: var(--bg-primary);
 }
 
 body {
   height: 100%;
+  min-height: 100vh;
+  background-color: var(--bg-primary);
   background: var(--bg-gradient);
   background-attachment: fixed;
   color: var(--text-primary);
@@ -164,18 +172,18 @@ body {
 
 /* 通用卡片样式和悬停效果 */
 .modern-card {
-  background: rgba(255, 255, 255, 0.95);
+  background: var(--card-bg);
   backdrop-filter: blur(10px);
   border-radius: var(--border-radius-lg);
-  box-shadow: var(--shadow-lg);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: var(--shadow-md);
+  border: 1px solid var(--border-color-light);
   transition: all 0.2s ease;
 }
 
 .modern-card:hover,
 .hover-lift:hover {
   transform: translateY(-2px);
-  box-shadow: var(--shadow-xl);
+  box-shadow: var(--shadow-lg);
 }
 
 /* 按钮增强 */

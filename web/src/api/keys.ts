@@ -172,17 +172,28 @@ export const keysApi = {
   },
 
   // 异步批量删除密钥
-  async deleteKeysAsync(group_id: number, keys_text: string): Promise<TaskInfo> {
-    const res = await http.post(
-      "/keys/delete-async",
-      {
-        group_id,
-        keys_text,
-      },
-      {
-        hideMessage: true,
-      }
-    );
+  async deleteKeysAsync(group_id: number, keys_text?: string, file?: File): Promise<TaskInfo> {
+    let requestData: FormData | { group_id: number; keys_text: string };
+    const config: {
+      hideMessage: boolean;
+      headers?: { "Content-Type": string };
+    } = {
+      hideMessage: true,
+    };
+
+    if (file) {
+      const formData = new FormData();
+      formData.append("group_id", group_id.toString());
+      formData.append("file", file);
+      requestData = formData;
+      config.headers = { "Content-Type": "multipart/form-data" };
+      const res = await uploadHttp.post("/keys/delete-async", requestData, config);
+      return res.data;
+    } else {
+      requestData = { group_id, keys_text: keys_text || "" };
+    }
+
+    const res = await http.post("/keys/delete-async", requestData, config);
     return res.data;
   },
 

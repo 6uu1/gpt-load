@@ -29,8 +29,8 @@ const themeOverrides = computed<GlobalThemeOverrides>(() => {
       primaryColorHover: "#0056CC",
       primaryColorPressed: "#004499",
       primaryColorSuppl: "#5AC8FA",
-      borderRadius: "14px",
-      borderRadiusSmall: "10px",
+      borderRadius: "10px",
+      borderRadiusSmall: "8px",
       fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
     },
     Card: {
@@ -61,32 +61,32 @@ const themeOverrides = computed<GlobalThemeOverrides>(() => {
       ...baseOverrides,
       common: {
         ...baseOverrides.common,
-        // 分层对比：浅色外层背景，深黑色内容
-        bodyColor: "#2b3038", // 外层背景 - 浅灰色
-        cardColor: "#0f1115", // 卡片内容 - 深黑色
-        modalColor: "#0f1115", // 模态框 - 深黑色
-        popoverColor: "#0f1115", // 弹出层 - 深黑色
-        tableColor: "#0f1115", // 表格 - 深黑色
-        inputColor: "#1a1d23", // 输入框 - 稍深一点
-        actionColor: "#1a1d23", // 操作区域
-        textColorBase: "#e8e8e8", // 文字 - 浅色高对比
-        textColor1: "#e8e8e8",
-        textColor2: "#b4b4b4",
-        textColor3: "#888888",
+        // 深色模式：更接近 Vercel/Linear 的层次
+        bodyColor: "#0b0c0f",
+        cardColor: "#0f1115",
+        modalColor: "#0f1115",
+        popoverColor: "#0f1115",
+        tableColor: "#0f1115",
+        inputColor: "#111317",
+        actionColor: "#111317",
+        textColorBase: "#f1f5f9",
+        textColor1: "#f1f5f9",
+        textColor2: "#cbd5e1",
+        textColor3: "#94a3b8",
         borderColor: "rgba(255, 255, 255, 0.08)",
-        dividerColor: "rgba(255, 255, 255, 0.05)",
+        dividerColor: "rgba(255, 255, 255, 0.06)",
       },
       Card: {
         ...baseOverrides.Card,
-        color: "#0f1115", // 卡片背景 - 深黑色
-        textColor: "#e8e8e8",
+        color: "#0f1115",
+        textColor: "#f1f5f9",
         borderColor: "rgba(255, 255, 255, 0.08)",
       },
       Input: {
         ...baseOverrides.Input,
-        color: "#1a1d23", // 输入框背景
-        textColor: "#e8e8e8",
-        colorFocus: "#1a1d23",
+        color: "#111317",
+        textColor: "#f1f5f9",
+        colorFocus: "#111317",
         borderHover: "rgba(0, 122, 255, 0.5)",
         borderFocus: "rgba(0, 122, 255, 0.8)",
         placeholderColor: "#666666",
@@ -94,52 +94,52 @@ const themeOverrides = computed<GlobalThemeOverrides>(() => {
       Select: {
         peers: {
           InternalSelection: {
-            textColor: "#e8e8e8",
-            color: "#1a1d23",
+            textColor: "#f1f5f9",
+            color: "#111317",
             placeholderColor: "#666666",
           },
         },
       },
       DataTable: {
-        tdColor: "#0f1115", // 表格单元格 - 深黑色
-        thColor: "#1a1d23", // 表头 - 稍深
-        thTextColor: "#e8e8e8",
-        tdTextColor: "#e8e8e8",
+        tdColor: "#0f1115",
+        thColor: "#111317",
+        thTextColor: "#f1f5f9",
+        tdTextColor: "#f1f5f9",
         borderColor: "rgba(255, 255, 255, 0.08)",
       },
       Tag: {
-        textColor: "#e8e8e8",
+        textColor: "#f1f5f9",
       },
       Pagination: {
-        itemTextColor: "#b4b4b4",
-        itemTextColorActive: "#e8e8e8",
-        itemColor: "#1a1d23",
-        itemColorActive: "#282c37",
+        itemTextColor: "#cbd5e1",
+        itemTextColorActive: "#f1f5f9",
+        itemColor: "#111317",
+        itemColorActive: "#161a21",
       },
       DatePicker: {
-        itemTextColor: "#e8e8e8",
-        itemColorActive: "#1a1d23",
+        itemTextColor: "#f1f5f9",
+        itemColorActive: "#111317",
         panelColor: "#0f1115",
       },
       Message: {
-        color: "#323841", // 消息背景 - 浅灰色，比内容区域浅
-        textColor: "#e8e8e8",
-        iconColor: "#e8e8e8",
+        color: "#111317",
+        textColor: "#f1f5f9",
+        iconColor: "#f1f5f9",
         borderRadius: "8px",
-        colorInfo: "#323841",
-        colorSuccess: "#323841",
-        colorWarning: "#323841",
-        colorError: "#323841",
-        colorLoading: "#323841",
+        colorInfo: "#111317",
+        colorSuccess: "#111317",
+        colorWarning: "#111317",
+        colorError: "#111317",
+        colorLoading: "#111317",
       },
       LoadingBar: {
         ...baseOverrides.LoadingBar,
       },
       Notification: {
-        color: "#323841", // 通知背景 - 浅灰色
-        textColor: "#e8e8e8",
-        titleTextColor: "#e8e8e8",
-        descriptionTextColor: "#b4b4b4",
+        color: "#111317",
+        textColor: "#f1f5f9",
+        titleTextColor: "#f1f5f9",
+        descriptionTextColor: "#cbd5e1",
         borderRadius: "8px",
       },
     };
