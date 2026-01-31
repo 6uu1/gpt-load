@@ -2,7 +2,7 @@
 import { keysApi } from "@/api/keys";
 import { appState } from "@/utils/app-state";
 import { Close, CloudUploadOutline } from "@vicons/ionicons5";
-import { NButton, NCard, NInput, NModal, NUpload, type UploadFileInfo } from "naive-ui";
+import { NButton, NCard, NInput, NModal, NUpload, NUploadDragger, type UploadFileInfo } from "naive-ui";
 import { ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
 
@@ -158,11 +158,13 @@ function isSubmitDisabled() {
         @change="handleFileChange"
         style="margin-top: 20px"
       >
-        <div class="upload-area">
-          <n-icon size="48" :component="CloudUploadOutline" style="color: #18a058" />
-          <div class="upload-text">{{ t("keys.clickOrDragFile") }}</div>
-          <div class="upload-hint">{{ t("keys.onlyTxtFileSupported") }}</div>
-        </div>
+        <n-upload-dragger>
+          <div class="upload-area">
+            <n-icon size="48" :component="CloudUploadOutline" style="color: #18a058" />
+            <div class="upload-text">{{ t("keys.clickOrDragFile") }}</div>
+            <div class="upload-hint">{{ t("keys.onlyTxtFileSupported") }}</div>
+          </div>
+        </n-upload-dragger>
       </n-upload>
 
       <template #footer>
