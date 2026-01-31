@@ -1,203 +1,146 @@
 <script setup lang="ts">
 import AppFooter from "@/components/AppFooter.vue";
 import GlobalTaskProgressBar from "@/components/GlobalTaskProgressBar.vue";
-import LanguageSelector from "@/components/LanguageSelector.vue";
-import Logout from "@/components/Logout.vue";
-import NavBar from "@/components/NavBar.vue";
-import ThemeToggle from "@/components/ThemeToggle.vue";
+import Sidebar from "@/components/layout/Sidebar.vue";
+import TopBar from "@/components/layout/TopBar.vue";
+import { useSidebar } from "@/composables/useSidebar";
 import { useMediaQuery } from "@vueuse/core";
-import { ref, watch } from "vue";
+import { AnimatePresence, motion } from "motion-v";
+import { onMounted, onUnmounted, watch } from "vue";
 
-const isMenuOpen = ref(false);
 const isMobile = useMediaQuery("(max-width: 768px)");
+const { collapsed, mobileOpen, closeMobile, toggleMobile, toggleCollapsed } = useSidebar();
 
 watch(isMobile, value => {
   if (!value) {
-    isMenuOpen.value = false;
+    closeMobile();
   }
 });
 
-const toggleMenu = () => {
-  isMenuOpen.value = !isMenuOpen.value;
+const handleKeydown = (e: KeyboardEvent) => {
+  if (e.key !== "[") return;
+  if (e.metaKey || e.ctrlKey || e.altKey || e.shiftKey) return;
+
+  const target = e.target as HTMLElement | null;
+  const tag = target?.tagName?.toLowerCase();
+  if (tag === "input" || tag === "textarea") return;
+  if ((target as HTMLElement | null)?.isContentEditable) return;
+
+  toggleCollapsed();
 };
+
+onMounted(() => {
+  window.addEventListener("keydown", handleKeydown);
+});
+
+onUnmounted(() => {
+  window.removeEventListener("keydown", handleKeydown);
+});
 </script>
 
 <template>
-  <n-layout class="main-layout">
-    <n-layout-header class="layout-header">
-      <div class="header-content">
-        <div class="header-brand">
-          <div class="brand-icon">
-            <img src="@/assets/logo.png" alt="" />
-          </div>
-          <h1 v-if="!isMobile" class="brand-title">GPT Load</h1>
-        </div>
+  <div class="app-shell">
+    <div
+      v-if="!isMobile"
+      class="app-sider"
+      :class="{ 'is-collapsed': collapsed }"
+      :style="{ width: collapsed ? '72px' : '260px' }"
+    >
+      <sidebar :collapsed="collapsed" @toggle-collapse="toggleCollapsed" />
+    </div>
 
-        <nav v-if="!isMobile" class="header-nav">
-          <nav-bar />
-        </nav>
+    <div class="app-main">
+      <top-bar
+        :is-mobile="!!isMobile"
+        :sidebar-collapsed="collapsed"
+        @toggle-mobile="toggleMobile"
+        @toggle-collapse="toggleCollapsed"
+      />
 
-        <div class="header-actions">
-          <language-selector />
-          <theme-toggle />
-          <logout v-if="!isMobile" />
-          <n-button v-if="isMobile" text @click="toggleMenu">
-            <svg viewBox="0 0 24 24" width="24" height="24">
-              <path fill="currentColor" d="M3,6H21V8H3V6M3,11H21V13H3V11M3,16H21V18H3V16Z" />
-            </svg>
-          </n-button>
+      <main class="app-content">
+        <div class="content-inner">
+          <router-view v-slot="{ Component, route }">
+            <animate-presence>
+              <motion.div
+                :key="route.fullPath"
+                class="page-motion"
+                :initial="{ opacity: 0, y: 10 }"
+                :animate="{ opacity: 1, y: 0 }"
+                :exit="{ opacity: 0, y: -8 }"
+                :transition="{
+                  duration: 0.18,
+                  ease: [0.22, 1, 0.36, 1],
+                }"
+              >
+                <component :is="Component" />
+              </motion.div>
+            </animate-presence>
+          </router-view>
         </div>
-      </div>
-    </n-layout-header>
+      </main>
 
-    <n-drawer v-model:show="isMenuOpen" :width="260" placement="right">
-      <n-drawer-content
-        title="GPT Load"
-        body-content-style="padding: 0; display: flex; flex-direction: column; height: 100%;"
-      >
-        <div style="flex: 1; overflow-y: auto">
-          <nav-bar mode="vertical" @close="isMenuOpen = false" />
-        </div>
-        <div class="mobile-actions">
-          <logout />
-        </div>
-      </n-drawer-content>
-    </n-drawer>
+      <app-footer />
+    </div>
+  </div>
 
-    <n-layout-content class="layout-content">
-      <div class="content-wrapper">
-        <router-view v-slot="{ Component }">
-          <transition name="fade" mode="out-in">
-            <component :is="Component" />
-          </transition>
-        </router-view>
-      </div>
-    </n-layout-content>
-    <app-footer />
-  </n-layout>
+  <!-- Mobile drawer -->
+  <n-drawer v-model:show="mobileOpen" :width="280" placement="left" :auto-focus="false">
+    <n-drawer-content body-content-style="padding: 0; height: 100%;">
+      <sidebar :collapsed="false" :auto-close="true" @close="closeMobile" />
+    </n-drawer-content>
+  </n-drawer>
 
   <!-- 全局任务进度条 -->
   <global-task-progress-bar />
 </template>
 
 <style scoped>
-.main-layout {
-  background: transparent;
-  min-height: 100vh;
+.app-shell {
+  height: 100vh;
   display: flex;
-  flex-direction: column;
+  background: transparent;
 }
 
-.layout-header {
-  background: var(--header-bg);
-  backdrop-filter: blur(20px);
-  border-bottom: 1px solid var(--border-color-light);
-  box-shadow: var(--shadow-sm);
+.app-sider {
+  flex: 0 0 auto;
+  height: 100%;
   position: sticky;
   top: 0;
-  z-index: 100;
-  padding: 0 12px;
+  background: var(--card-bg-solid);
+  border-right: 1px solid var(--border-color-light);
+  transition: width 0.22s cubic-bezier(0.2, 0.8, 0.2, 1);
+  overflow: hidden;
 }
 
-.header-content {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 8px 0;
-  overflow-x: auto;
-  max-width: 1200px;
-  margin: 0 auto;
-  position: relative;
-}
-
-.header-nav {
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 1;
-}
-
-.header-brand {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  flex-shrink: 0;
-  z-index: 2;
-}
-
-.brand-icon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 35px;
-  height: 35px;
-  img {
-    height: 100%;
-    width: 100%;
-  }
-}
-
-.brand-title {
-  font-size: 1.4rem;
-  font-weight: 700;
-  background: var(--primary-gradient);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  margin: 0;
-  letter-spacing: -0.3px;
-}
-
-.header-actions {
-  flex-shrink: 0;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  z-index: 2;
-}
-
-.mobile-actions {
-  padding: 16px;
-  border-top: 1px solid var(--border-color-light);
+.app-main {
+  flex: 1;
+  min-width: 0;
+  height: 100%;
   display: flex;
   flex-direction: column;
-  align-items: stretch;
-  gap: 12px;
-  margin-top: auto;
 }
 
-.layout-content {
+.app-content {
   flex: 1;
+  min-height: 0;
   overflow: auto;
   background: transparent;
-  max-width: 1200px;
+}
+
+.content-inner {
+  width: 100%;
+  max-width: 1280px;
   margin: 0 auto;
+  padding: 20px 20px 28px;
+}
+
+.page-motion {
   width: 100%;
 }
 
-.content-wrapper {
-  padding: 16px;
-  min-height: calc(100vh - 111px);
-}
-
-.layout-footer {
-  background: transparent;
-  padding: 0;
-}
-
-/* Mobile specific styles */
 @media (max-width: 768px) {
-  .header-nav {
-    position: static;
-    transform: none;
-  }
-
-  .header-content {
-    overflow-x: visible;
-  }
-
-  .mobile-actions > :deep(*) {
-    width: 100%;
+  .content-inner {
+    padding: 16px;
   }
 }
 </style>

@@ -1,14 +1,7 @@
 <script setup lang="ts">
-import {
-  IconBrain,
-  IconGem,
-  IconLink,
-  IconRobot,
-  IconTool,
-} from "@/components/icons";
 import type { Group } from "@/types/models";
 import { getGroupDisplayName } from "@/utils/display";
-import { Add, Search } from "@vicons/ionicons5";
+import { Bot, Brain, Gem, Link, Plus, Search, Wrench } from "lucide-vue-next";
 import { NButton, NCard, NEmpty, NIcon, NInput, NSpin, NTag } from "naive-ui";
 import { computed, ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
@@ -38,7 +31,7 @@ const emit = defineEmits<Emits>();
 const searchText = ref("");
 const showGroupModal = ref(false);
 // 存储分组项 DOM 元素的引用
-const groupItemRefs = ref(new Map());
+const groupItemRefs = ref<Record<number, HTMLElement | undefined>>({});
 const showAggregateGroupModal = ref(false);
 
 const filteredGroups = computed(() => {
@@ -48,8 +41,8 @@ const filteredGroups = computed(() => {
   const search = searchText.value.toLowerCase().trim();
   return props.groups.filter(
     group =>
-      group.name.toLowerCase().includes(search) ||
-      group.display_name?.toLowerCase().includes(search)
+      group.name.toLowerCase().indexOf(search) !== -1 ||
+      group.display_name?.toLowerCase().indexOf(search) !== -1
   );
 });
 
@@ -57,11 +50,11 @@ const filteredGroups = computed(() => {
 watch(
   () => props.selectedGroup?.id,
   id => {
-    if (!id || props.groups.length === 0) {
+    if (typeof id !== "number" || props.groups.length === 0) {
       return;
     }
 
-    const element = groupItemRefs.value.get(id);
+    const element = groupItemRefs.value[id];
     if (element) {
       element.scrollIntoView({
         behavior: "smooth", // 平滑滚动
@@ -139,7 +132,7 @@ function handleGroupCreated(group: Group) {
           <div v-else class="groups-list">
             <div
               v-for="group in filteredGroups"
-              :key="group.id"
+              :key="group.id ?? group.name"
               class="group-item"
               :class="{
                 active: selectedGroup?.id === group.id,
@@ -148,32 +141,32 @@ function handleGroupCreated(group: Group) {
               @click="handleGroupClick(group)"
               :ref="
                 el => {
-                  if (el) groupItemRefs.set(group.id, el);
+                  if (el && group.id != null) groupItemRefs[group.id!] = el as HTMLElement;
                 }
               "
             >
               <div class="group-icon">
                 <n-icon
                   v-if="group.group_type === 'aggregate'"
-                  :component="IconLink"
+                  :component="Link"
                   :size="16"
                 />
                 <n-icon
                   v-else-if="group.channel_type === 'openai'"
-                  :component="IconRobot"
+                  :component="Bot"
                   :size="16"
                 />
                 <n-icon
                   v-else-if="group.channel_type === 'gemini'"
-                  :component="IconGem"
+                  :component="Gem"
                   :size="16"
                 />
                 <n-icon
                   v-else-if="group.channel_type === 'anthropic'"
-                  :component="IconBrain"
+                  :component="Brain"
                   :size="16"
                 />
-                <n-icon v-else :component="IconTool" :size="16" />
+                <n-icon v-else :component="Wrench" :size="16" />
               </div>
               <div class="group-content">
                 <div class="group-name">{{ getGroupDisplayName(group) }}</div>
@@ -198,13 +191,13 @@ function handleGroupCreated(group: Group) {
       <div class="add-section">
         <n-button type="success" size="small" block @click="openCreateGroupModal">
           <template #icon>
-            <n-icon :component="Add" />
+            <n-icon :component="Plus" />
           </template>
           {{ t("keys.createGroup") }}
         </n-button>
         <n-button type="info" size="small" block @click="openCreateAggregateGroupModal">
           <template #icon>
-            <n-icon :component="IconLink" />
+            <n-icon :component="Link" />
           </template>
           {{ t("keys.createAggregateGroup") }}
         </n-button>

@@ -1,50 +1,53 @@
 <script setup lang="ts">
-import {
-  IconDashboard,
-  IconKeys,
-  IconLogs,
-  IconSettings,
-} from "@/components/icons";
-import { type MenuOption, NIcon } from "naive-ui";
+import type { MenuOption } from "naive-ui";
+import { BarChart3, FileText, KeyRound, LayoutDashboard, Settings } from "lucide-vue-next";
 import { computed, h, watch } from "vue";
 import { useI18n } from "vue-i18n";
 import { RouterLink, useRoute } from "vue-router";
 
 const { t } = useI18n();
 
-const props = defineProps({
-  mode: {
-    type: String,
-    default: "horizontal",
-  },
-});
+const props = withDefaults(
+  defineProps<{
+    mode?: "vertical" | "horizontal";
+    collapsed?: boolean;
+    autoClose?: boolean;
+  }>(),
+  {
+    mode: "vertical",
+    collapsed: false,
+    autoClose: false,
+  }
+);
 
-const emit = defineEmits(["close"]);
+const emit = defineEmits<{
+  (e: "close"): void;
+}>();
 
-// 图标映射
+// 图标映射（Lucide）
 const iconComponents: Record<string, any> = {
-  dashboard: IconDashboard,
-  keys: IconKeys,
-  logs: IconLogs,
-  settings: IconSettings,
+  dashboard: LayoutDashboard,
+  keys: KeyRound,
+  logs: FileText,
+  settings: Settings,
+  // 预留：后续如果要加“统计/分析”等页面
+  analytics: BarChart3,
 };
 
 const menuOptions = computed<MenuOption[]>(() => {
-  const options: MenuOption[] = [
+  return [
     renderMenuItem("dashboard", t("nav.dashboard")),
     renderMenuItem("keys", t("nav.keys")),
     renderMenuItem("logs", t("nav.logs")),
     renderMenuItem("settings", t("nav.settings")),
   ];
-
-  return options;
 });
 
 const route = useRoute();
-const activeMenu = computed(() => route.name);
+const activeMenu = computed<string | null>(() => (typeof route.name === "string" ? route.name : null));
 
 watch(activeMenu, () => {
-  if (props.mode === "vertical") {
+  if (props.autoClose && props.mode === "vertical") {
     emit("close");
   }
 });
@@ -52,78 +55,73 @@ watch(activeMenu, () => {
 function renderMenuItem(key: string, label: string): MenuOption {
   const iconComponent = iconComponents[key];
   return {
+    key,
+    icon: () => h(iconComponent, { size: 18, strokeWidth: 1.75 }),
     label: () =>
       h(
         RouterLink,
         {
-          to: {
-            name: key,
-          },
-          class: "nav-menu-item",
+          to: { name: key },
+          class: "nav-link",
         },
-        {
-          default: () => [
-            h(
-              "span",
-              { class: "nav-item-icon" },
-              h(NIcon, { component: iconComponent, size: 18 })
-            ),
-            h("span", { class: "nav-item-text" }, label),
-          ],
-        }
+        { default: () => label }
       ),
-    key,
   };
 }
 </script>
 
 <template>
-  <div>
-    <n-menu :mode="mode" :options="menuOptions" :value="activeMenu" class="modern-menu" />
-  </div>
+  <n-menu
+    :mode="mode"
+    :options="menuOptions"
+    :value="activeMenu"
+    :collapsed="mode === 'vertical' ? collapsed : false"
+    :collapsed-width="72"
+    :collapsed-icon-size="18"
+    :icon-size="18"
+    class="nav-menu"
+  />
 </template>
 
 <style scoped>
-:deep(.nav-menu-item) {
-  display: flex;
+/* 让 RouterLink 撑满整行可点击区域 */
+:deep(.nav-link) {
+  width: 100%;
+  display: inline-flex;
   align-items: center;
-  gap: 8px;
   text-decoration: none;
   color: inherit;
-  padding: 8px;
-  border-radius: var(--border-radius-md);
-  transition: all 0.2s ease;
-  font-weight: 500;
+  font-weight: 600;
+  letter-spacing: -0.1px;
 }
 
 :deep(.n-menu-item) {
-  border-radius: var(--border-radius-md);
-}
-
-:deep(.n-menu--vertical .n-menu-item-content) {
-  justify-content: center;
-}
-
-:deep(.n-menu--vertical .n-menu-item) {
   margin: 4px 8px;
 }
 
-:deep(.n-menu-item:hover) {
-  background: rgba(0, 122, 255, 0.1);
-  transform: translateY(-1px);
-  border-radius: var(--border-radius-md);
+:deep(.n-menu-item-content) {
+  border-radius: 12px;
+  transition:
+    background 0.18s ease,
+    transform 0.18s ease;
 }
 
-:deep(.n-menu-item--selected) {
-  background: var(--primary-gradient);
-  color: white;
-  font-weight: 600;
-  box-shadow: var(--shadow-md);
-  border-radius: var(--border-radius-md);
+:deep(.n-menu-item:hover .n-menu-item-content) {
+  background: var(--hover-bg);
+  transform: translateY(-1px);
 }
 
-:deep(.n-menu-item--selected:hover) {
-  background: linear-gradient(135deg, #0056CC 0%, #4AA8E0 100%);
-  transform: translateY(-1px);
+:deep(.n-menu-item--selected .n-menu-item-content) {
+  background: rgba(0, 122, 255, 0.14);
+  color: var(--text-primary);
+}
+
+:global(.dark) :deep(.n-menu-item--selected .n-menu-item-content) {
+  background: rgba(0, 122, 255, 0.22);
+}
+
+/* 折叠时让内容居中更像 Vercel */
+:deep(.n-menu--vertical.n-menu--collapsed .n-menu-item-content) {
+  justify-content: center;
 }
 </style>
