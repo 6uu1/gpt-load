@@ -1,5 +1,11 @@
 <script setup lang="ts">
-import { type MenuOption } from "naive-ui";
+import {
+  IconDashboard,
+  IconKeys,
+  IconLogs,
+  IconSettings,
+} from "@/components/icons";
+import { type MenuOption, NIcon } from "naive-ui";
 import { computed, h, watch } from "vue";
 import { useI18n } from "vue-i18n";
 import { RouterLink, useRoute } from "vue-router";
@@ -15,12 +21,20 @@ const props = defineProps({
 
 const emit = defineEmits(["close"]);
 
+// 图标映射
+const iconComponents: Record<string, any> = {
+  dashboard: IconDashboard,
+  keys: IconKeys,
+  logs: IconLogs,
+  settings: IconSettings,
+};
+
 const menuOptions = computed<MenuOption[]>(() => {
   const options: MenuOption[] = [
-    renderMenuItem("dashboard", t("nav.dashboard"), "📊"),
-    renderMenuItem("keys", t("nav.keys"), "🔑"),
-    renderMenuItem("logs", t("nav.logs"), "📋"),
-    renderMenuItem("settings", t("nav.settings"), "⚙️"),
+    renderMenuItem("dashboard", t("nav.dashboard")),
+    renderMenuItem("keys", t("nav.keys")),
+    renderMenuItem("logs", t("nav.logs")),
+    renderMenuItem("settings", t("nav.settings")),
   ];
 
   return options;
@@ -35,7 +49,8 @@ watch(activeMenu, () => {
   }
 });
 
-function renderMenuItem(key: string, label: string, icon: string): MenuOption {
+function renderMenuItem(key: string, label: string): MenuOption {
+  const iconComponent = iconComponents[key];
   return {
     label: () =>
       h(
@@ -48,7 +63,11 @@ function renderMenuItem(key: string, label: string, icon: string): MenuOption {
         },
         {
           default: () => [
-            h("span", { class: "nav-item-icon" }, icon),
+            h(
+              "span",
+              { class: "nav-item-icon" },
+              h(NIcon, { component: iconComponent, size: 18 })
+            ),
             h("span", { class: "nav-item-text" }, label),
           ],
         }

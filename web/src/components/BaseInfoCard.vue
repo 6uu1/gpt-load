@@ -1,6 +1,12 @@
 <script setup lang="ts">
+import {
+  IconChart,
+  IconKey,
+  IconShield,
+  IconSpeed,
+} from "@/components/icons";
 import type { DashboardStatsResponse } from "@/types/models";
-import { NCard, NGrid, NGridItem, NSpace, NTag, NTooltip } from "naive-ui";
+import { NCard, NGrid, NGridItem, NIcon, NSpace, NTag, NTooltip } from "naive-ui";
 import { computed, onMounted, ref } from "vue";
 import { useI18n } from "vue-i18n";
 
@@ -67,7 +73,9 @@ onMounted(() => {
         <n-grid-item span="1">
           <n-card :bordered="false" class="stat-card" style="animation-delay: 0s">
             <div class="stat-header">
-              <div class="stat-icon key-icon">🔑</div>
+              <div class="stat-icon key-icon">
+                <n-icon :component="IconKey" :size="22" color="white" />
+              </div>
               <n-tooltip v-if="stats?.key_count.sub_value" trigger="hover">
                 <template #trigger>
                   <n-tag type="error" size="small" class="stat-trend">
@@ -100,7 +108,9 @@ onMounted(() => {
         <n-grid-item span="1">
           <n-card :bordered="false" class="stat-card" style="animation-delay: 0.05s">
             <div class="stat-header">
-              <div class="stat-icon rpm-icon">⏱️</div>
+              <div class="stat-icon rpm-icon">
+                <n-icon :component="IconSpeed" :size="22" color="white" />
+              </div>
               <n-tag
                 v-if="stats?.rpm && stats.rpm.trend !== undefined"
                 :type="stats?.rpm.trend_is_growth ? 'success' : 'error'"
@@ -133,7 +143,9 @@ onMounted(() => {
         <n-grid-item span="1">
           <n-card :bordered="false" class="stat-card" style="animation-delay: 0.1s">
             <div class="stat-header">
-              <div class="stat-icon request-icon">📈</div>
+              <div class="stat-icon request-icon">
+                <n-icon :component="IconChart" :size="22" color="white" />
+              </div>
               <n-tag
                 v-if="stats?.request_count && stats.request_count.trend !== undefined"
                 :type="stats?.request_count.trend_is_growth ? 'success' : 'error'"
@@ -166,7 +178,9 @@ onMounted(() => {
         <n-grid-item span="1">
           <n-card :bordered="false" class="stat-card" style="animation-delay: 0.15s">
             <div class="stat-header">
-              <div class="stat-icon error-icon">🛡️</div>
+              <div class="stat-icon error-icon">
+                <n-icon :component="IconShield" :size="22" color="white" />
+              </div>
               <n-tag
                 v-if="stats?.error_rate.trend !== 0"
                 :type="stats?.error_rate.trend_is_growth ? 'success' : 'error'"
@@ -235,7 +249,6 @@ onMounted(() => {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.4rem;
   color: white;
   box-shadow: var(--shadow-md);
 }
