@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import type { DashboardStatsResponse } from "@/types/models";
-import { NCard, NGrid, NGridItem, NSpace, NTag, NTooltip } from "naive-ui";
+import { BarChart3, Gauge, Key, Shield } from "lucide-vue-next";
+import { motion } from "motion-v";
+import { NCard, NGrid, NGridItem, NIcon, NSpace, NTag, NTooltip } from "naive-ui";
 import { computed, onMounted, ref } from "vue";
 import { useI18n } from "vue-i18n";
 
@@ -14,6 +16,14 @@ interface Props {
 
 const props = withDefaults(defineProps<Props>(), {
   loading: false,
+});
+
+const cardTransition = (delay: number) => ({
+  type: "spring" as const,
+  stiffness: 520,
+  damping: 34,
+  mass: 0.6,
+  delay,
 });
 
 // 使用计算属性代替ref
@@ -65,134 +75,166 @@ onMounted(() => {
       <n-grid cols="2 s:4" :x-gap="20" :y-gap="20" responsive="screen">
         <!-- 密钥数量 -->
         <n-grid-item span="1">
-          <n-card :bordered="false" class="stat-card" style="animation-delay: 0s">
-            <div class="stat-header">
-              <div class="stat-icon key-icon">🔑</div>
-              <n-tooltip v-if="stats?.key_count.sub_value" trigger="hover">
-                <template #trigger>
-                  <n-tag type="error" size="small" class="stat-trend">
-                    {{ stats.key_count.sub_value }}
-                  </n-tag>
-                </template>
-                {{ stats.key_count.sub_value_tip }}
-              </n-tooltip>
-            </div>
-
-            <div class="stat-content">
-              <div class="stat-value">
-                {{ stats?.key_count?.value ?? 0 }}
+          <motion.div
+            :initial="{ opacity: 0, y: 10 }"
+            :animate="{ opacity: 1, y: 0 }"
+            :transition="cardTransition(0)"
+          >
+            <n-card :bordered="false" class="stat-card">
+              <div class="stat-header">
+                <div class="stat-icon key-icon">
+                  <n-icon :component="Key" :size="22" color="white" />
+                </div>
+                <n-tooltip v-if="stats?.key_count.sub_value" trigger="hover">
+                  <template #trigger>
+                    <n-tag type="error" size="small" class="stat-trend">
+                      {{ stats.key_count.sub_value }}
+                    </n-tag>
+                  </template>
+                  {{ stats.key_count.sub_value_tip }}
+                </n-tooltip>
               </div>
-              <div class="stat-title">{{ t("dashboard.totalKeys") }}</div>
-            </div>
 
-            <div class="stat-bar">
-              <div
-                class="stat-bar-fill key-bar"
-                :style="{
-                  width: `${(animatedValues.key_count ?? 0) * 100}%`,
-                }"
-              />
-            </div>
-          </n-card>
+              <div class="stat-content">
+                <div class="stat-value">
+                  {{ stats?.key_count?.value ?? 0 }}
+                </div>
+                <div class="stat-title">{{ t("dashboard.totalKeys") }}</div>
+              </div>
+
+              <div class="stat-bar">
+                <div
+                  class="stat-bar-fill key-bar"
+                  :style="{
+                    width: `${(animatedValues.key_count ?? 0) * 100}%`,
+                  }"
+                />
+              </div>
+            </n-card>
+          </motion.div>
         </n-grid-item>
 
         <!-- RPM (10分钟) -->
         <n-grid-item span="1">
-          <n-card :bordered="false" class="stat-card" style="animation-delay: 0.05s">
-            <div class="stat-header">
-              <div class="stat-icon rpm-icon">⏱️</div>
-              <n-tag
-                v-if="stats?.rpm && stats.rpm.trend !== undefined"
-                :type="stats?.rpm.trend_is_growth ? 'success' : 'error'"
-                size="small"
-                class="stat-trend"
-              >
-                {{ stats ? formatTrend(stats.rpm.trend) : "--" }}
-              </n-tag>
-            </div>
-
-            <div class="stat-content">
-              <div class="stat-value">
-                {{ stats?.rpm?.value.toFixed(1) ?? 0 }}
+          <motion.div
+            :initial="{ opacity: 0, y: 10 }"
+            :animate="{ opacity: 1, y: 0 }"
+            :transition="cardTransition(0.04)"
+          >
+            <n-card :bordered="false" class="stat-card">
+              <div class="stat-header">
+                <div class="stat-icon rpm-icon">
+                  <n-icon :component="Gauge" :size="22" color="white" />
+                </div>
+                <n-tag
+                  v-if="stats?.rpm && stats.rpm.trend !== undefined"
+                  :type="stats?.rpm.trend_is_growth ? 'success' : 'error'"
+                  size="small"
+                  class="stat-trend"
+                >
+                  {{ stats ? formatTrend(stats.rpm.trend) : "--" }}
+                </n-tag>
               </div>
-              <div class="stat-title">{{ t("dashboard.rpm10Min") }}</div>
-            </div>
 
-            <div class="stat-bar">
-              <div
-                class="stat-bar-fill rpm-bar"
-                :style="{
-                  width: `${(animatedValues.rpm ?? 0) * 100}%`,
-                }"
-              />
-            </div>
-          </n-card>
+              <div class="stat-content">
+                <div class="stat-value">
+                  {{ stats?.rpm?.value.toFixed(1) ?? 0 }}
+                </div>
+                <div class="stat-title">{{ t("dashboard.rpm10Min") }}</div>
+              </div>
+
+              <div class="stat-bar">
+                <div
+                  class="stat-bar-fill rpm-bar"
+                  :style="{
+                    width: `${(animatedValues.rpm ?? 0) * 100}%`,
+                  }"
+                />
+              </div>
+            </n-card>
+          </motion.div>
         </n-grid-item>
 
         <!-- 24小时请求 -->
         <n-grid-item span="1">
-          <n-card :bordered="false" class="stat-card" style="animation-delay: 0.1s">
-            <div class="stat-header">
-              <div class="stat-icon request-icon">📈</div>
-              <n-tag
-                v-if="stats?.request_count && stats.request_count.trend !== undefined"
-                :type="stats?.request_count.trend_is_growth ? 'success' : 'error'"
-                size="small"
-                class="stat-trend"
-              >
-                {{ stats ? formatTrend(stats.request_count.trend) : "--" }}
-              </n-tag>
-            </div>
-
-            <div class="stat-content">
-              <div class="stat-value">
-                {{ stats ? formatValue(stats.request_count.value) : "--" }}
+          <motion.div
+            :initial="{ opacity: 0, y: 10 }"
+            :animate="{ opacity: 1, y: 0 }"
+            :transition="cardTransition(0.08)"
+          >
+            <n-card :bordered="false" class="stat-card">
+              <div class="stat-header">
+                <div class="stat-icon request-icon">
+                  <n-icon :component="BarChart3" :size="22" color="white" />
+                </div>
+                <n-tag
+                  v-if="stats?.request_count && stats.request_count.trend !== undefined"
+                  :type="stats?.request_count.trend_is_growth ? 'success' : 'error'"
+                  size="small"
+                  class="stat-trend"
+                >
+                  {{ stats ? formatTrend(stats.request_count.trend) : "--" }}
+                </n-tag>
               </div>
-              <div class="stat-title">{{ t("dashboard.requests24h") }}</div>
-            </div>
 
-            <div class="stat-bar">
-              <div
-                class="stat-bar-fill request-bar"
-                :style="{
-                  width: `${(animatedValues.request_count ?? 0) * 100}%`,
-                }"
-              />
-            </div>
-          </n-card>
+              <div class="stat-content">
+                <div class="stat-value">
+                  {{ stats ? formatValue(stats.request_count.value) : "--" }}
+                </div>
+                <div class="stat-title">{{ t("dashboard.requests24h") }}</div>
+              </div>
+
+              <div class="stat-bar">
+                <div
+                  class="stat-bar-fill request-bar"
+                  :style="{
+                    width: `${(animatedValues.request_count ?? 0) * 100}%`,
+                  }"
+                />
+              </div>
+            </n-card>
+          </motion.div>
         </n-grid-item>
 
         <!-- 24小时错误率 -->
         <n-grid-item span="1">
-          <n-card :bordered="false" class="stat-card" style="animation-delay: 0.15s">
-            <div class="stat-header">
-              <div class="stat-icon error-icon">🛡️</div>
-              <n-tag
-                v-if="stats?.error_rate.trend !== 0"
-                :type="stats?.error_rate.trend_is_growth ? 'success' : 'error'"
-                size="small"
-                class="stat-trend"
-              >
-                {{ stats ? formatTrend(stats.error_rate.trend) : "--" }}
-              </n-tag>
-            </div>
-
-            <div class="stat-content">
-              <div class="stat-value">
-                {{ stats ? formatValue(stats.error_rate.value ?? 0, "rate") : "--" }}
+          <motion.div
+            :initial="{ opacity: 0, y: 10 }"
+            :animate="{ opacity: 1, y: 0 }"
+            :transition="cardTransition(0.12)"
+          >
+            <n-card :bordered="false" class="stat-card">
+              <div class="stat-header">
+                <div class="stat-icon error-icon">
+                  <n-icon :component="Shield" :size="22" color="white" />
+                </div>
+                <n-tag
+                  v-if="stats?.error_rate.trend !== 0"
+                  :type="stats?.error_rate.trend_is_growth ? 'success' : 'error'"
+                  size="small"
+                  class="stat-trend"
+                >
+                  {{ stats ? formatTrend(stats.error_rate.trend) : "--" }}
+                </n-tag>
               </div>
-              <div class="stat-title">{{ t("dashboard.errorRate24h") }}</div>
-            </div>
 
-            <div class="stat-bar">
-              <div
-                class="stat-bar-fill error-bar"
-                :style="{
-                  width: `${(animatedValues.error_rate ?? 0) * 100}%`,
-                }"
-              />
-            </div>
-          </n-card>
+              <div class="stat-content">
+                <div class="stat-value">
+                  {{ stats ? formatValue(stats.error_rate.value ?? 0, "rate") : "--" }}
+                </div>
+                <div class="stat-title">{{ t("dashboard.errorRate24h") }}</div>
+              </div>
+
+              <div class="stat-bar">
+                <div
+                  class="stat-bar-fill error-bar"
+                  :style="{
+                    width: `${(animatedValues.error_rate ?? 0) * 100}%`,
+                  }"
+                />
+              </div>
+            </n-card>
+          </motion.div>
         </n-grid-item>
       </n-grid>
     </n-space>
@@ -202,7 +244,6 @@ onMounted(() => {
 <style scoped>
 .stats-container {
   width: 100%;
-  animation: fadeInUp 0.2s ease-out;
   margin-bottom: 16px;
 }
 
@@ -212,7 +253,6 @@ onMounted(() => {
   border: 1px solid var(--border-color-light);
   position: relative;
   overflow: hidden;
-  animation: slideInUp 0.2s ease-out both;
   transition: all 0.2s ease;
 }
 
@@ -235,7 +275,6 @@ onMounted(() => {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.4rem;
   color: white;
   box-shadow: var(--shadow-md);
 }
@@ -317,28 +356,6 @@ onMounted(() => {
 
 .error-bar {
   background: linear-gradient(90deg, #FF3B30 0%, #FF453A 100%);
-}
-
-@keyframes slideInUp {
-  from {
-    opacity: 0;
-    transform: translateY(30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
 }
 
 /* 响应式网格 */

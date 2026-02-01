@@ -4,34 +4,34 @@
 :root,
 :root.light {
   /* 背景色 */
-  --bg-primary: #ffffff;
-  --bg-secondary: #f5f7fa;
+  --bg-primary: #fafafa;
+  --bg-secondary: #f3f4f6;
   --bg-tertiary: #e5e7eb;
-  --bg-gradient: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  --bg-gradient: linear-gradient(180deg, #fafafa 0%, #f3f4f6 100%);
 
   /* 文字颜色 */
-  --text-primary: #1e293b;
-  --text-secondary: #475569;
-  --text-tertiary: #94a3b8;
+  --text-primary: #0f172a;
+  --text-secondary: #334155;
+  --text-tertiary: #64748b;
   --text-inverse: #ffffff;
 
   /* 边框颜色 */
-  --border-color: #e2e8f0;
-  --border-color-light: rgba(0, 0, 0, 0.08);
+  --border-color: #e5e7eb;
+  --border-color-light: rgba(0, 0, 0, 0.06);
 
   /* 卡片背景 */
-  --card-bg: rgba(255, 255, 255, 0.95);
+  --card-bg: rgba(255, 255, 255, 0.92);
   --card-bg-solid: #ffffff;
 
   /* 组件颜色 */
-  --header-bg: rgba(255, 255, 255, 0.95);
-  --footer-bg: rgba(255, 255, 255, 0.95);
+  --header-bg: rgba(255, 255, 255, 0.88);
+  --footer-bg: rgba(255, 255, 255, 0.88);
 
   /* 状态颜色 */
   --success-bg: rgba(24, 160, 88, 0.1);
   --success-border: rgba(24, 160, 88, 0.3);
-  --error-bg: rgba(255, 193, 7, 0.1);
-  --error-border: rgba(255, 193, 7, 0.5);
+  --error-bg: rgba(239, 68, 68, 0.08);
+  --error-border: rgba(239, 68, 68, 0.22);
   --invalid-bg: rgb(250, 250, 252);
   --invalid-border: #ddd;
 
@@ -45,9 +45,9 @@
   --chart-legend-secondary: #475569;
 
   /* 阴影 */
-  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.06);
+  --shadow-md: 0 6px 18px rgba(0, 0, 0, 0.08);
+  --shadow-lg: 0 14px 36px rgba(0, 0, 0, 0.12);
 
   /* 其他 */
   --overlay-bg: rgba(255, 255, 255, 0.8);
@@ -62,19 +62,19 @@
 /* 深色主题变量 */
 :root.dark {
   /* 背景色 - 外层浅色，内容深色 */
-  --bg-primary: #2b3038;
-  --bg-secondary: #323841;
-  --bg-tertiary: #3a414d;
-  --bg-gradient: linear-gradient(135deg, #323841 0%, #2b3038 100%);
+  --bg-primary: #0b0c0f;
+  --bg-secondary: #0f1115;
+  --bg-tertiary: #161a21;
+  --bg-gradient: linear-gradient(180deg, #0b0c0f 0%, #0f1115 100%);
 
   /* 文字颜色 - 浅色高对比 */
-  --text-primary: #e8e8e8;
-  --text-secondary: #b4b4b4;
-  --text-tertiary: #888888;
+  --text-primary: #f1f5f9;
+  --text-secondary: #cbd5e1;
+  --text-tertiary: #94a3b8;
   --text-inverse: #1a1d23;
 
   /* 边框颜色 */
-  --border-color: #1a1d23;
+  --border-color: #0b0c0f;
   --border-color-light: rgba(255, 255, 255, 0.06);
 
   /* 卡片背景 - 深黑色内容 */
@@ -82,14 +82,14 @@
   --card-bg-solid: #0f1115;
 
   /* 组件颜色 - 深黑色 */
-  --header-bg: rgba(15, 17, 21, 0.95);
-  --footer-bg: rgba(15, 17, 21, 0.95);
+  --header-bg: rgba(15, 17, 21, 0.88);
+  --footer-bg: rgba(15, 17, 21, 0.88);
 
   /* 状态颜色 */
   --success-bg: rgba(24, 160, 88, 0.12);
   --success-border: rgba(24, 160, 88, 0.35);
-  --error-bg: rgba(255, 193, 7, 0.12);
-  --error-border: rgba(255, 193, 7, 0.35);
+  --error-bg: rgba(248, 113, 113, 0.12);
+  --error-border: rgba(248, 113, 113, 0.28);
   --invalid-bg: rgba(15, 17, 21, 0.6);
   --invalid-border: #2a2f38;
 
@@ -103,9 +103,9 @@
   --chart-legend-secondary: #b4b4b4;
 
   /* 阴影 */
-  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.2);
-  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
-  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.4), 0 4px 6px -2px rgba(0, 0, 0, 0.3);
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.5);
+  --shadow-md: 0 10px 26px rgba(0, 0, 0, 0.55);
+  --shadow-lg: 0 18px 48px rgba(0, 0, 0, 0.6);
 
   /* 其他 */
   --overlay-bg: rgba(15, 17, 21, 0.8);
@@ -130,11 +130,18 @@
   --warning-gradient: linear-gradient(135deg, #FF9500 0%, #FFCC00 100%);
 
   /* 边框半径 - 更圆润的苹果风格 */
-  --border-radius-sm: 10px;
-  --border-radius-md: 14px;
-  --border-radius-lg: 20px;
-  --border-radius-xl: 28px;
+  --border-radius-sm: 8px;
+  --border-radius-md: 10px;
+  --border-radius-lg: 14px;
+  --border-radius-xl: 18px;
+
+  /* 间距系统（统一页面节奏） */
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+  --spacing-xl: 32px;
 
   /* 阴影（添加到通用部分） */
-  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  --shadow-xl: 0 24px 60px rgba(0, 0, 0, 0.16);
 }
